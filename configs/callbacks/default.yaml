@@ -1,0 +1,32 @@
+﻿# @package callbacks
+
+model_checkpoint:
+  _target_: lightning.pytorch.callbacks.ModelCheckpoint
+  monitor: valid/loss
+  mode: min
+  save_top_k: 1
+  save_last: true
+  verbose: false
+  dirpath: ${paths.checkpoint_dir}
+  filename: "epoch_{epoch:03d}-valloss_{valid/loss:.4f}"
+  auto_insert_metric_name: false
+
+early_stopping:
+  _target_: lightning.pytorch.callbacks.EarlyStopping
+  monitor: valid/loss
+  mode: min
+  patience: 20
+  min_delta: 1.0e-6
+  check_on_train_epoch_end: false
+
+model_summary:
+  _target_: lightning.pytorch.callbacks.RichModelSummary
+  max_depth: 5
+
+rich_progress_bar:
+  _target_: lightning.pytorch.callbacks.RichProgressBar
+  refresh_rate: 1
+
+learning_rate_monitor:
+  _target_: lightning.pytorch.callbacks.LearningRateMonitor
+  logging_interval: epoch

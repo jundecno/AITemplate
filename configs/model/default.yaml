@@ -1,0 +1,15 @@
+﻿# @package model
+
+_target_: models.model.LitRegressor
+input_dim: 32
+output_dim: 1
+hidden_dim: 128
+num_layers: 3
+activation: silu
+dropout: 0.1
+lr: ${train.optimizer.lr}
+weight_decay: ${train.optimizer.weight_decay}
+scheduler_factor: ${train.scheduler.factor}
+scheduler_patience: ${train.scheduler.patience}
+scheduler_min_lr: ${train.scheduler.min_lr}
+scheduler_monitor: ${train.scheduler.monitor}

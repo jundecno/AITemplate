@@ -1,0 +1,30 @@
+﻿# @package loggers
+
+csv:
+  _target_: lightning.pytorch.loggers.CSVLogger
+  save_dir: ${paths.log_dir}
+  name: ${name}
+
+wandb:
+  _target_: lightning.pytorch.loggers.wandb.WandbLogger
+  project: ai-template
+  name: ${name}
+  save_dir: ${paths.log_dir}
+  offline: true
+  id: null
+  entity: null
+  log_model: false
+  prefix: ""
+  job_type: train
+  group: ""
+  tags: []
+
+tensorboard:
+  _target_: lightning.pytorch.loggers.tensorboard.TensorBoardLogger
+  save_dir: ${paths.log_dir}/tensorboard
+  name: ${name}
+  version: null
+  default_hp_metric: false
+  log_graph: false
+  prefix: ""
+  flush_secs: 30

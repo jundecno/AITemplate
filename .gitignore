@@ -1,0 +1,120 @@
+# =========================
+# 1. Python 基础 & 编译文件
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# =========================
+# 2. 虚拟环境 (Virtual Environments)
+# =========================
+# 常见的虚拟环境文件夹命名
+venv/
+.venv/
+env/
+.env/
+my_env/
+anaconda3/
+miniconda3/
+
+# =========================
+# 3. AI/ML 模型与权重 (Model Weights)
+# =========================
+# 这些文件通常很大，不应该上传到 GitHub
+# 建议使用 Hugging Face Hub 或 Git LFS 管理
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.h4
+*.pb
+*.onnx
+*.safetensors
+*.pkl
+*.model
+weights/
+checkpoints/
+saved_models/
+
+# =========================
+# 4. 数据集 (Datasets)
+# =========================
+# 原始数据和处理后的数据通常很大且可能涉及隐私
+./data/
+dataset/
+datasets/
+raw_data/
+processed_data/
+*.csv
+*.tsv
+*.jsonl
+*.parquet
+*.zip
+*.tar.gz
+
+# =========================
+# 5. 日志与监控 (Logs & Monitoring)
+# =========================
+# 训练日志、TensorBoard 记录、WandB 记录
+logs/
+log/
+runs/
+lightning_logs/
+wandb/
+.wandb/
+mlruns/
+profiling/
+
+# =========================
+# 6. Jupyter Notebook
+# =========================
+# 忽略 checkpoints 缓存
+.ipynb_checkpoints
+# 可选：如果你不想上传运行结果，可以忽略所有 .ipynb
+# *.ipynb
+
+# =========================
+# 7. 配置与密钥 (Secrets & Config)
+# =========================
+# 绝对不要上传 API Key 或 密码！
+.env
+.env.local
+.env.*
+secrets.yaml
+config_local.yaml
+*.key
+*.pem
+
+# =========================
+# 8. IDE 与 编辑器配置
+# =========================
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# =========================
+# 9. 测试与覆盖率
+# =========================
+.coverage
+htmlcov/
+.pytest_cache/

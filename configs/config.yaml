@@ -1,0 +1,31 @@
+﻿defaults:
+  - train: default
+  - model: default
+  - callbacks: default
+  - loggers: default
+  - _self_
+
+name: debug-run
+
+paths:
+  root_dir: ${hydra:runtime.cwd}
+  output_dir: ${hydra:runtime.output_dir}
+  checkpoint_dir: ${paths.output_dir}/checkpoints
+  log_dir: ${paths.output_dir}/logs
+
+logger_names:
+  - csv
+  - tensorboard
+
+callback_names:
+  - model_checkpoint
+  - early_stopping
+  - model_summary
+  - rich_progress_bar
+  - learning_rate_monitor
+
+hydra:
+  run:
+    dir: results/${now:%Y-%m-%d}/${now:%H-%M-%S}_${name}
+  job:
+    chdir: false

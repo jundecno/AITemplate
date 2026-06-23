@@ -1,0 +1,7 @@
+- train.trainer.max_epochs=1
+- train.data.num_workers=0
+- train.data.train_size=64
+- train.data.valid_size=32
+- train.data.test_size=32
+- logger_names=[csv]
+- callback_names=[model_checkpoint,learning_rate_monitor]

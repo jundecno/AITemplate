@@ -1,0 +1,111 @@
+train:
+  seed: 3407
+  compile: false
+  trainer:
+    _target_: lightning.pytorch.Trainer
+    accelerator: auto
+    devices: auto
+    max_epochs: 1
+    deterministic: true
+    precision: 32
+    log_every_n_steps: 10
+    enable_checkpointing: true
+    default_root_dir: ${paths.output_dir}
+  optimizer:
+    lr: 0.0003
+    weight_decay: 0.01
+  scheduler:
+    factor: 0.5
+    patience: 5
+    min_lr: 3.0e-06
+    monitor: valid/loss
+  data:
+    _target_: models.dataloader.RegressionDataModule
+    batch_size: 32
+    num_workers: 0
+    input_dim: ${model.input_dim}
+    output_dim: ${model.output_dim}
+    train_size: 64
+    valid_size: 32
+    test_size: 32
+    noise: 0.05
+    seed: ${train.seed}
+model:
+  _target_: models.model.LitRegressor
+  input_dim: 32
+  output_dim: 1
+  hidden_dim: 128
+  num_layers: 3
+  activation: silu
+  dropout: 0.1
+  lr: ${train.optimizer.lr}
+  weight_decay: ${train.optimizer.weight_decay}
+  scheduler_factor: ${train.scheduler.factor}
+  scheduler_patience: ${train.scheduler.patience}
+  scheduler_min_lr: ${train.scheduler.min_lr}
+  scheduler_monitor: ${train.scheduler.monitor}
+callbacks:
+  model_checkpoint:
+    _target_: lightning.pytorch.callbacks.ModelCheckpoint
+    monitor: valid/loss
+    mode: min
+    save_top_k: 1
+    save_last: true
+    verbose: false
+    dirpath: ${paths.checkpoint_dir}
+    filename: epoch_{epoch:03d}-valloss_{valid/loss:.4f}
+    auto_insert_metric_name: false
+  early_stopping:
+    _target_: lightning.pytorch.callbacks.EarlyStopping
+    monitor: valid/loss
+    mode: min
+    patience: 20
+    min_delta: 1.0e-06
+    check_on_train_epoch_end: false
+  model_summary:
+    _target_: lightning.pytorch.callbacks.RichModelSummary
+    max_depth: 5
+  rich_progress_bar:
+    _target_: lightning.pytorch.callbacks.RichProgressBar
+    refresh_rate: 1
+  learning_rate_monitor:
+    _target_: lightning.pytorch.callbacks.LearningRateMonitor
+    logging_interval: epoch
+loggers:
+  csv:
+    _target_: lightning.pytorch.loggers.CSVLogger
+    save_dir: ${paths.log_dir}
+    name: ${name}
+  wandb:
+    _target_: lightning.pytorch.loggers.wandb.WandbLogger
+    project: ai-template
+    name: ${name}
+    save_dir: ${paths.log_dir}
+    offline: true
+    id: null
+    entity: null
+    log_model: false
+    prefix: ''
+    job_type: train
+    group: ''
+    tags: []
+  tensorboard:
+    _target_: lightning.pytorch.loggers.tensorboard.TensorBoardLogger
+    save_dir: ${paths.log_dir}/tensorboard
+    name: ${name}
+    version: null
+    default_hp_metric: false
+    log_graph: false
+    prefix: ''
+    flush_secs: 30
+name: debug-run
+paths:
+  root_dir: ${hydra:runtime.cwd}
+  output_dir: ${hydra:runtime.output_dir}
+  checkpoint_dir: ${paths.output_dir}/checkpoints
+  log_dir: ${paths.output_dir}/logs
+logger_names:
+- csv
+callback_names:
+- model_checkpoint
+- learning_rate_monitor
